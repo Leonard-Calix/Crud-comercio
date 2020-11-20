@@ -1,18 +1,13 @@
-var mongoose = require('mongoose');
+var { Sequelize } = require('sequelize');
 
-var servidor = 'localhost:27017';
-var db = 'spotify';
 
-class Database{
-    constructor(){
-        //Promesas
-        mongoose.connect(`mongodb://${servidor}/${db}`)
-        .then(()=>{
-            console.log('Se conecto a mongo');
-        }).catch((error)=>{
-            console.log(error);
-        });
-    }
-}
+var sequelize = new Sequelize(
+    'Comercio_bd',
+    'Leo',
+    '1234', {
+    host: 'localhost',
+    dialect: 'postgres',
+    logging: false
+});
 
-module.exports = new Database();
+module.exports = sequelize;
