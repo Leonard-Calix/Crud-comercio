@@ -11,6 +11,10 @@ import DetailsIcon from '@material-ui/icons/Details';
 import swal from 'sweetalert';
 import PersonIcon from '@material-ui/icons/Person';
 
+import { useDispatch, useSelector } from 'react-redux';
+
+// actions
+import { obtenerComercio, comercioActivo,activarComercio } from '../actions/comercio';
 
 const useStyles = makeStyles({
     root: {
@@ -29,36 +33,22 @@ const useStyles = makeStyles({
     }
 });
 
+export const CardComercio = ({ id, nombreComercio, propietario, direccion, tipoComercio }) => {
 
-const btnEliminarComercio = () => {
-    //console.log('Eliminar');
-
-    swal({
-        title: "Are you sure?",
-        text: "Once deleted, you will not be able to recover this imaginary file!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    })
-        .then((response) => {
-            if (response) {
-                console.log(response);
-                swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                });
-            } else {
-                swal("Your imaginary file is safe!");
-            }
-        });
-}
-
-const btnDetallesComercio = () => {
-    console.log('Detalles');
-}
-
-export const CardComercio = () => {
-
+    const dispatch = useDispatch();
     const classes = useStyles();
+
+
+    const btnEliminarComercio = (id) => {
+        console.log('Eliminar', id);
+    }
+
+    const btnDetallesComercio = (id) => {
+        //console.log('Detalles', id);
+        dispatch( obtenerComercio({ id }) );
+
+    }
+
 
     return (
         <div>
@@ -73,18 +63,18 @@ export const CardComercio = () => {
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                        Nombre comercio
+                        {nombreComercio}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        <PersonIcon /> Propietario
+                        <PersonIcon /> {propietario}
                     </Typography>
                 </CardContent>
                 <CardActions>
 
-                    <Button onClick={btnDetallesComercio} size="small" color="primary">
+                    <Button onClick={() => btnDetallesComercio(id)} size="small" color="primary">
                         <DetailsIcon />
                     </Button>
-                    <Button onClick={btnEliminarComercio} size="small" right="right" color="secondary">
+                    <Button onClick={() => btnEliminarComercio(id)} size="small" right="right" color="secondary">
                         <DeleteIcon />
                     </Button>
                 </CardActions>

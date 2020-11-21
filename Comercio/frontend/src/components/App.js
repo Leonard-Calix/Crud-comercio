@@ -4,12 +4,16 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { AppRoute } from '../routers/AppRoute';
 
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
 
 export const App = () => {
     return (
-        <Container maxWidth="lg">
-            <AppRoute />
-        </Container>
+        <Provider store= { store } >
+            <Container maxWidth="lg">
+                <AppRoute />
+            </Container>
+        </Provider>
     )
 }

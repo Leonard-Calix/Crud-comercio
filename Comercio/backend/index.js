@@ -23,7 +23,7 @@ app.listen(8888, () => {
     console.log('Servidor del backend levantado en http://localhost:8888');
 
     try {
-        sequelize.sync({ force: false }).then(() => {
+        sequelize.sync(force = false  ).then(() => {
             console.log('Conexion establecida.');
         });
     } catch (error) {
