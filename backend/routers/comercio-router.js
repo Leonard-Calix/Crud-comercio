@@ -7,6 +7,7 @@ router.post('/', function (req, res) {
 
     Comercio.create({
         nombreComercio: req.body.nombreComercio,
+        propietario: req.body.propietario,
         fechaRegistro: req.body.fechaRegistro,
         direccion: req.body.direccion,
         tipoComercio: req.body.tipoComercio,
@@ -56,6 +57,7 @@ router.put('/:id', function (req, res) {
 
     Comercio.update({
         nombreComercio: req.body.nombreComercio,
+        propietario: req.body.propietario,
         fechaRegistro: req.body.fechaRegistro,
         direccion: req.body.direccion,
         tipoComercio: req.body.tipoComercio
