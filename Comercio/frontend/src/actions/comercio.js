@@ -31,7 +31,7 @@ export const obtenerComercios = () => {
 export const obtenerComercio = (event) => {
     return async (dispatch) => {
         try {
-            const resp = await fetch('http://localhost:8888/comercios/'+event.id)
+            const resp = await fetch('http://localhost:8888/comercios/' + event.id)
             const body = await resp.json();
 
             dispatch(activarComercio(body));
@@ -45,10 +45,12 @@ export const obtenerComercio = (event) => {
 export const EliminarComercio = (event) => {
     return async (dispatch) => {
         try {
-            const resp = await fetch('http://localhost:8888/comercios/'+event.id)
+            const resp = await fetch('http://localhost:8888/comercios/' + event.id, { method: 'DELETE' });
             const body = await resp.json();
 
-            dispatch(activarComercio(body));
+            console.log(body);
+
+            //dispatch(activarComercio(body));
 
         } catch (error) {
             console.log(error);
@@ -59,7 +61,7 @@ export const EliminarComercio = (event) => {
 export const actualizarComercio = (event) => {
     return async (dispatch) => {
         try {
-            const resp = await fetch('http://localhost:8888/comercios/'+event.id)
+            const resp = await fetch('http://localhost:8888/comercios/' + event.id)
             const body = await resp.json();
 
             dispatch(activarComercio(body));

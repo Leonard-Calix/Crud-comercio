@@ -8,13 +8,15 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DetailsIcon from '@material-ui/icons/Details';
-import swal from 'sweetalert';
+//import swal from 'sweetalert';
 import PersonIcon from '@material-ui/icons/Person';
+import MenuIcon from '@material-ui/icons/Menu';
+
 
 import { useDispatch, useSelector } from 'react-redux';
 
 // actions
-import { obtenerComercio, comercioActivo,activarComercio } from '../actions/comercio';
+import { obtenerComercio, EliminarComercio } from '../actions/comercio';
 
 const useStyles = makeStyles({
     root: {
@@ -38,15 +40,14 @@ export const CardComercio = ({ id, nombreComercio, propietario, direccion, tipoC
     const dispatch = useDispatch();
     const classes = useStyles();
 
-
     const btnEliminarComercio = (id) => {
         console.log('Eliminar', id);
+        dispatch( EliminarComercio({ id }) );
     }
 
     const btnDetallesComercio = (id) => {
-        //console.log('Detalles', id);
-        dispatch( obtenerComercio({ id }) );
-
+        console.log('Detalles', id);
+        //dispatch( EliminarComercio({ id }) );
     }
 
 
@@ -54,13 +55,6 @@ export const CardComercio = ({ id, nombreComercio, propietario, direccion, tipoC
         <div>
 
             <Card className={classes.root} variant="outlined">
-                <CardMedia
-                    component="img"
-                    alt="Contemplative Reptile"
-                    height="140"
-                    image="https://miro.medium.com/max/3440/1*QfmtMDpR23DkpSBOEB50FA.png"
-                    title="Contemplative Reptile"
-                />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                         {nombreComercio}
@@ -69,10 +63,10 @@ export const CardComercio = ({ id, nombreComercio, propietario, direccion, tipoC
                         <PersonIcon /> {propietario}
                     </Typography>
                 </CardContent>
+                
                 <CardActions>
-
                     <Button onClick={() => btnDetallesComercio(id)} size="small" color="primary">
-                        <DetailsIcon />
+                        <MenuIcon />
                     </Button>
                     <Button onClick={() => btnEliminarComercio(id)} size="small" right="right" color="secondary">
                         <DeleteIcon />

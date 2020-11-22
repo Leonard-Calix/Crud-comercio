@@ -10,7 +10,7 @@ import { ListaComercios } from '../components/ListaComercios';
 export const AppRoute = () => {
     return (
         <Router>
-           
+           <NavBar/>
             <Switch>
                 <Route exact path="/" component={ListaComercios} />
                 <Route exact path="/nuevo-comercio" component={NuevoComercio} />

@@ -1,9 +1,10 @@
 import React from 'react';
-import 'date-fns';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
+
+import { ModalNuevo } from './ModalNuevo';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +23,9 @@ export const NuevoComercio = () => {
 
     return (
         <div className={classes.root}>
+
+            <ModalNuevo />
+
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>Nombre PROPIERATCIO</Paper>
@@ -37,7 +41,7 @@ export const NuevoComercio = () => {
 
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
-                        
+
                     </Paper>
                 </Grid>
 
@@ -46,7 +50,7 @@ export const NuevoComercio = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={12}>
-                    <Paper className={classes.paper}>Opciones</Paper>
+                    
                 </Grid>
 
             </Grid>
