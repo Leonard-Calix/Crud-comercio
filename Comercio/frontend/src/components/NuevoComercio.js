@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 
+// actions
+import { obtenerComercios, comercioActivo } from '../actions/comercio';
 
-import { ModalNuevo } from './ModalNuevo';
+// Reducer
+import { useDispatch, useSelector } from 'react-redux';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -12,48 +14,66 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     paper: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(3),
         textAlign: 'center',
         color: theme.palette.text.secondary,
+    },
+    imput: {
+        '& > *': {
+            margin: theme.spacing(3),
+            width: '100%',
+        },
     },
 }));
 
 export const NuevoComercio = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const { comercioActivo } = useSelector(state => state.comercio);
+    const { nombreComercio, propietario, fechaRegistro, direccion } = comercioActivo;
+
+    useEffect(() => {
+        dispatch(obtenerComercios())
+    }, [dispatch]);
+
 
     return (
         <div className={classes.root}>
+            <div className="card m-5">
+                <div className="card-header">
+                    <h4 className="card-title text-center text-uppercase">{nombreComercio}</h4>
+                </div>
+                <div className="card-body">
+                    <div className="row m-4 P-5">
+                        <div className="col-md-6">
+                            <h5 className="card-title">PROPIETARIO</h5>
+                            <p className="card-text">{propietario}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 className="card-title">DIRECION</h5>
+                            <p className="card-text">{direccion}</p>
+                        </div>
+                    </div>
 
-            <ModalNuevo />
-
-            <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                    <Paper className={classes.paper}>Nombre PROPIERATCIO</Paper>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                    <Paper className={classes.paper}>Nombre comercio</Paper>
-                </Grid>
-
-                <Grid item xs={12} sm={12}>
-                    <Paper className={classes.paper}>Drieccion </Paper>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                    <Paper className={classes.paper}>
-
-                    </Paper>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                    <Paper className={classes.paper}>Tipo comercio</Paper>
-                </Grid>
-
-                <Grid item xs={12} sm={12}>
-                    
-                </Grid>
-
-            </Grid>
+                    <div className="row m-4 P-5">
+                        <div className="col-md-6">
+                            <h5 className="card-title">FECHA</h5>
+                            <p className="card-text">{propietario}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 className="card-title">DIRECION</h5>
+                            <p className="card-text">{direccion}</p>
+                        </div>
+                    </div>
+                    <div className="row m-4 P-5">
+                        <div className="col-md-6">
+                            <h5 className="card-title">TIPO DE COMERCIO</h5>
+                            <p className="card-text">{propietario}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

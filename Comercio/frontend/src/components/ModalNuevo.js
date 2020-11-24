@@ -12,114 +12,76 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 import { tiposComercios, opcionesComercios } from '../types/tiposComercios';
+import { comidaState, hogarState, construccionState, caracteristicas, state } from '../types/estados';
+import { modalStyle } from '../styles/modal';
+import { useForm } from '../hooks/useForm';
+import { useFormCheckbox } from '../hooks/useFormCheckbox';
+
+// actions
+import { agregarComercio } from '../actions/comercio';
 
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    },
-    btn: {
-        '& > *': {
-            margin: theme.spacing(1)
-        }
-    },
-    imput: {
-        '& > *': {
-            margin: theme.spacing(1),
-            width: '100%',
-        },
-    },
-    select: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            width: '100%',
-        },
-    }
-}));
 
-export const ModalNuevo = () => {
+const useStyles = makeStyles(modalStyle);
+
+export const ModalNuevo = ({ handleOpen, handleClose, show }) => {
+    const dispatch = useDispatch();
     const classes = useStyles();
-    const [show, setShow] = React.useState(false);
-    const [currency, setCurrency] = React.useState(0);
-    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+    //const [show, setShow] = React.useState(false);
 
-
-    const [state, setState] = React.useState({
-        Muebles:false, 
-        Camas:false,
-        DecoraciónElectrodomésticos: false,
-        Cafeterías: false, 
-        Restaurantes: false, 
-        Heladería: false,
-        Otro: false,
-    });
-    const { gilad, jason, antoine } = state;
-
-    const error = [gilad, jason, antoine].filter((v) => v).length !== 2;
-
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
-    };
+    const [values, handelImputChanche] = useForm(state);
+    const { nombre, propietario, direccion, fecha, tipoComercio } = values;
+    const [valuesCheck, handelImputChancheCheck] = useFormCheckbox(caracteristicas);
+    const { cafeterias, restaurantes, heladeria, muebles, electrodomesticos, ferreterias, ventasConstruccion, materialesElectrico, bombas, otro } = valuesCheck;
 
     const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
-        console.log( state );
+        // setState({ ...state, [event.target.name]: event.target.checked });
+        console.log(state);
     };
 
-    const handleOpen = () => {
-        setShow(true);
-        console.log('Hola');
-    };
+    const handleSubmit = () => {
 
-    const handleClose = () => {
-        setShow(false);
-    };
+        values.opciones = JSON.stringify(valuesCheck);
+        console.log(values);
 
-    const handleChangeSelect = (event) => {
-        setCurrency(event.target.value);
+        dispatch((agregarComercio(values)));
     };
 
     return (
         <div>
-            <Button variant="contained" onClick={handleOpen}>
-                Nuevo
-            </Button>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Nuevo comercio</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Grid container spacing={4}>
+                    <Grid container>
                         <Grid item xs={12} sm={6}>
                             <div className={classes.imput} noValidate autoComplete="off">
-                                <TextField label="Nombre del comercio" />
+                                <TextField name="nombre" value={nombre} onChange={handelImputChanche} label="Nombre del comercio" />
                             </div>
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
                             <div className={classes.imput} noValidate autoComplete="off">
-                                <TextField label="Propietario del comercio" />
+                                <TextField name="propietario" value={propietario} onChange={handelImputChanche} label="Propietario del comercio" />
                             </div>
                         </Grid>
 
                         <Grid item xs={12}>
 
                             <div className={classes.imput} noValidate autoComplete="off">
-                                <TextField label="Direccion del comercio" />
+                                <TextField name="direccion" value={direccion} onChange={handelImputChanche} label="Direccion del comercio" />
                             </div>
                         </Grid>
 
                         <Grid item xs={12} sm={12}>
                             <div className={classes.imput} noValidate autoComplete="off">
-                                <TextField label="Fecha" />
+                                <TextField name="fecha" value={fecha} onChange={handelImputChanche} label="Fecha" />
                             </div>
                         </Grid>
 
@@ -127,9 +89,10 @@ export const ModalNuevo = () => {
                             <div className={classes.select} noValidate autoComplete="off">
                                 <TextField
                                     select
+                                    name="tipoComercio"
                                     label="Tipo de comercio"
-                                    value={currency}
-                                    onChange={handleChangeSelect}
+                                    value={tipoComercio}
+                                    onChange={handelImputChanche}
                                     helperText="Selecione un tipo de comercio"
                                 >
                                     {
@@ -145,16 +108,17 @@ export const ModalNuevo = () => {
                         <Grid item xs={12} sm={12}>
                             <FormControl component="fieldset" className={classes.formControl}>
                                 <FormLabel component="legend">Eliga uno o varias</FormLabel>
+
                                 <FormGroup>
                                     {
-                                        opcionesComercios[currency].nombre.map( opcion => (
+                                        opcionesComercios[tipoComercio].caracteristicas.map(opcion => (
                                             <FormControlLabel
-                                                control={<Checkbox onChange={handleChange} name={opcion} />} label={opcion}
+                                                control={<Checkbox onChange={handelImputChancheCheck} name={opcion.value} />} label={opcion.label}
                                             />
                                         ))
-                                    }                                    
+                                    }
                                 </FormGroup>
-                                <FormHelperText>Be careful</FormHelperText>
+
                             </FormControl>
                         </Grid>
                     </Grid>
@@ -164,7 +128,7 @@ export const ModalNuevo = () => {
                         <Button variant="contained" onClick={handleClose}>
                             Cerrar
                         </Button>
-                        <Button variant="contained" color="secondary" onClick={handleClose}>
+                        <Button variant="contained" color="secondary" onClick={handleSubmit}>
                             Guardar
                         </Button>
                     </div>

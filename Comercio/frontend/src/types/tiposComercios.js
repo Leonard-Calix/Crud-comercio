@@ -1,30 +1,76 @@
 
 export const opcionesComercios = [
     {
-        tipo: 0,
-        nombre: ['Cafeterías', 'Restaurantes', 'Heladería','Otro'],
+        caracteristicas: [
+            {
+                label: 'Cafeterías',
+                value: 'cafeterias'
+            },
+            {
+                label: 'Restaurantes',
+                value: 'restaurantes'
+            },
+            {
+                label: 'Heladeria',
+                value: 'heladeria'
+            },
+            {
+                label: 'Otro',
+                value: 'otro'
+            }]
     },
     {
-        tipo: 1,
-        nombre: ['Muebles, Camas, Decoración', 'Electrodomésticos','Otro'],
+        caracteristicas: [
+            {
+                label: 'Muebles',
+                value: 'muebles'
+            },
+            {
+                label: 'Electrodomesticos',
+                value: 'electrodomesticos'
+            },
+            {
+                label: 'Otro',
+                value: 'otro'
+            }]
     },
     {
-        tipo: 2,
-        nombre: ['Ventas de Materiales', 'Ferreterías', 'Materiales Eléctricos', 'Bombas y Agua','Otro'],
+        caracteristicas: [
+            {
+                label: 'Ferreterias',
+                value: 'ferreterias'
+            },
+            {
+                label: 'Ventas de materiales de construcion',
+                value: 'ventasConstruccion'
+            },
+            {
+                label: 'Materiales Electricos',
+                value: 'materialesElectrico'
+            },
+            {
+                label: 'Bombas',
+                value: 'bombas'
+            },
+            {
+                label: 'Otro',
+                value: 'otro'
+            }
+        ]
     }
 ];
 
 export const tiposComercios = [
     {
-        value: '0',
+        value: 0,
         label: 'Comida / Restaurante'
     },
     {
-        value: '1',
+        value: 1,
         label: 'Hogar',
     },
     {
-        value: '2',
+        value: 2,
         label: 'Construcción',
     }
 ];

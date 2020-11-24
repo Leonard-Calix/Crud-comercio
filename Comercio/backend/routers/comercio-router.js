@@ -1,86 +1,96 @@
 var express = require('express');
-const Comercio = require('../models/comercio-model');
+const ComercioComida = require('../models/comercioComida-model');
+
 var router = express.Router();
 
-//Guardar comercio
+//obtener comercios 
 router.post('/', function (req, res) {
 
-    Comercio.create({
+    console.log(req.body)
+
+    ComercioComida.create({
         nombreComercio: req.body.nombreComercio,
         propietario: req.body.propietario,
-        fechaRegistro: req.body.fechaRegistro,
         direccion: req.body.direccion,
+        fecha: req.body.fecha,
+        nombreTipoComercio: req.body.nombreTipoComercio,
         tipoComercio: req.body.tipoComercio,
+        opciones: req.body.opciones,
+        otro: req.body.otro
     }).then(comercio => {
         res.json(comercio);
         res.end();
-    }).catch(err => {
-        res.json(err);
+    }).catch(error => {
+        res.json(error);
         res.end();
-    });
-
+    })
 });
 
-//obtener comercios
+
+//obtener comercios 
 router.get('/', function (req, res) {
 
-    Comercio.findAll().then(comercios => {
+    ComercioComida.findAll( 
+    ).then(comercios => {
         res.json(comercios);
         res.end();
     }).catch(error => {
         res.json(error);
         res.end();
     })
-
 });
 
 // Obtener un comercio
 router.get('/:id', function (req, res) {
 
-    Comercio.findByPk(req.params.id).then(comercio => {
+    ComercioComida.findByPk(req.params.id).then(comercio => {
 
         if (comercio) {
-            return  res.json(comercio);
+            return res.json(comercio);
         }
 
-        res.json({mensaje: 'No hay datos'});
+        res.json({ mensaje: 'No hay datos' });
 
-       
+
     }).catch(error => {
         res.json(error);
         res.end();
     })
 });
 
-// Editar un comercio
+
+// Editar un comercio Comida
 router.put('/:id', function (req, res) {
 
-    Comercio.update({
+    ComercioComida.update({
         nombreComercio: req.body.nombreComercio,
         propietario: req.body.propietario,
-        fechaRegistro: req.body.fechaRegistro,
         direccion: req.body.direccion,
-        tipoComercio: req.body.tipoComercio
+        fecha: req.body.fecha,
+        nombreTipoComercio: req.body.nombreTipoComercio,
+        tipoComercio: req.body.tipoComercio,
+        opciones: req.body.opciones,
+        otro: req.body.otro
     }, {
         where: {
             id: req.params.id
         }
     }).then(result => {
+
+
         res.send(result);
         res.end();
     }).catch(error => {
         res.json(error);
         res.end();
     });
-
-
 });
 
 // Eliminar un comercio
 router.delete('/:id', function (req, res) {
-    
-    Comercio.destroy({
-        where:{
+
+    ComercioComida.destroy({
+        where: {
             id: req.params.id
         }
     }).then(result => {
@@ -92,6 +102,5 @@ router.delete('/:id', function (req, res) {
     });
 
 });
-
 
 module.exports = router;

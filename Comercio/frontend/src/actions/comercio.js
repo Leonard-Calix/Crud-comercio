@@ -1,23 +1,9 @@
 import { types } from '../types/types';
 
-export const agregarComercios = () => {
-    return async (dispatch) => {
-        try {
-            const resp = await fetch('http://localhost:8888/comercios')
-            const body = await resp.json();
-
-            dispatch(CargarComercios(body));
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
-
 export const obtenerComercios = () => {
     return async (dispatch) => {
         try {
-            const resp = await fetch('http://localhost:8888/comercios')
+            const resp = await fetch('http://localhost:8888/comercios');
             const body = await resp.json();
 
             dispatch(CargarComercios(body));
@@ -27,6 +13,7 @@ export const obtenerComercios = () => {
         }
     }
 }
+
 
 export const obtenerComercio = (event) => {
     return async (dispatch) => {
@@ -48,9 +35,11 @@ export const EliminarComercio = (event) => {
             const resp = await fetch('http://localhost:8888/comercios/' + event.id, { method: 'DELETE' });
             const body = await resp.json();
 
-            console.log(body);
+            //console.log(body);
 
-            //dispatch(activarComercio(body));
+            if (body == 1) {
+                dispatch(obtenerComercios());
+            }
 
         } catch (error) {
             console.log(error);
@@ -61,16 +50,49 @@ export const EliminarComercio = (event) => {
 export const actualizarComercio = (event) => {
     return async (dispatch) => {
         try {
-            const resp = await fetch('http://localhost:8888/comercios/' + event.id)
+            const resp = await fetch(`http://localhost:8888/comercios/${event.id}`, {
+                method: "PUT", 
+                body: JSON.stringify(event)
+            });
+
             const body = await resp.json();
 
-            dispatch(activarComercio(body));
+            console.log(body);
 
+            //dispatch(activarComercio(body));
         } catch (error) {
             console.log(error);
         }
     }
 }
+
+export const agregarComercio = (event) => {
+    return async (dispatch) => {
+        try {
+            const resp = await fetch(`http://localhost:8888/comercios`, {
+                method: "POST", 
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(event),
+            });
+            
+            const body = await resp.json();
+
+            console.log(body);
+
+            //dispatch(activarComercio(body));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+
+
+
+
+
 
 // ACIONES PARA EL REDUCER
 

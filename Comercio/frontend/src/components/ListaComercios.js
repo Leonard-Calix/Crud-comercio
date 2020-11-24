@@ -6,14 +6,13 @@ import { CardComercio } from './CardComercio';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
+import { ModalNuevo } from './ModalNuevo';
 
 // actions
 import { obtenerComercios, comercioActivo } from '../actions/comercio';
 
 // Reducer
 import { useDispatch, useSelector } from 'react-redux';
-
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-//const [correo, setcorreo] = useState()
 
 const handleInputChance = (event) => {
     console.log(event.target.value);
@@ -39,6 +37,8 @@ const handleInputChance = (event) => {
 
 const handleSubmit = () => {
     console.log('Metodo para guardar el comercio');
+
+
 }
 
 const handleModal = () => {
@@ -46,22 +46,32 @@ const handleModal = () => {
 }
 
 
-
 export const ListaComercios = () => {
 
     const classes = useStyles();
     const dispatch = useDispatch();
+    const [show, setShow] = React.useState(false);
     const { comercios } = useSelector(state => state.comercio);
     //console.log(comercios)
 
     useEffect(() => {
-        dispatch(obtenerComercios())
+        dispatch(obtenerComercios());
     }, [dispatch]);
+
+    const handleOpen = () => {
+        setShow(true);
+        //console.log('Hola');
+    };
+
+    const handleClose = () => {
+        setShow(false);
+
+    };
 
     return (
         <div>
             <div className={classes.root}>
-                <Grid spacing={2}>
+                <Grid >
                     <Grid item xs={12} sm={12} >
                         <Paper className={classes.paper}>
                             <Typography gutterBottom variant="h4" component="h2">
@@ -73,21 +83,23 @@ export const ListaComercios = () => {
                     <Grid item xs={12} sm={12} >
 
                         <Paper className={classes.paper}>
-                            <Grid container spacing={2}>
+                            <Grid spacing={3} container >
                                 {
                                     comercios.map(comercio => (
-                                        <Grid key={comercio.id} item xs={12} md={4} sm={12}>
-                                            <CardComercio  {...comercio} />
+                                        <Grid item xs={12} md={4} sm={12}>
+                                            <CardComercio key={comercio.id} {...comercio} />
                                         </Grid>
                                     ))
                                 }
+                                <Fab color="primary" onClick={handleOpen} className={classes.fab}>
+                                    <AddIcon />
+                                </Fab>
                             </Grid>
                         </Paper>
-                        <Fab color="primary" onClick={handleModal} className={classes.fab}>
-                            <AddIcon />
-                        </Fab>
+
                     </Grid>
                 </Grid>
+                <ModalNuevo handleOpen={handleOpen} handleClose={handleClose} show={show} />
             </div>
 
         </div>
