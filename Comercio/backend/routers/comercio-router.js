@@ -60,8 +60,6 @@ router.get('/:id', function (req, res) {
 // Editar un comercio Comida
 router.put('/:id', function (req, res) {
 
-    console.log(req.body)
-
     ComercioComida.update({
         nombreComercio: req.body.nombreComercio,
         propietario: req.body.propietario,
