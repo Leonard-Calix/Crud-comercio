@@ -10,16 +10,14 @@ import { Alert } from '@material-ui/lab';
 
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
+    DatePicker,
+    TimePicker,
+    DateTimePicker,
+    MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-
 
 // actions
 import { obtenerComercios, actualizarComercio, obtenerComercio } from '../actions/comercio';
-
 // Reducer
 import { useDispatch, useSelector } from 'react-redux';
 //import { useFormCheckbox } from '../hooks/useFormCheckbox';
@@ -35,8 +33,7 @@ export const EditarComercio = () => {
     const dispatch = useDispatch();
     const { idComercio } = useParams();
     const [alert, setAlert] = React.useState(false);
-    //const { comercioActivo } = useSelector(state => state.comercio);
-    //const opciones = JSON.parse(comercioActivo.opciones);
+    const [alertError, setAlertError] = React.useState(false);
 
     const [values, setvalues] = useState(state);
     const [opciones, setOpciones] = useState(caracteristicas);
@@ -44,38 +41,37 @@ export const EditarComercio = () => {
 
 
     useEffect(() => {
-
         obtenerComercioFetch();
-
     }, [])
 
     const { cafeterias, restaurantes, heladeria, muebles, electrodomesticos, ferreterias, ventasConstruccion, materialesElectrico, bombas, otros } = opciones;
-
     const { id, nombreComercio, propietario, direccion, fecha, tipoComercio, otro } = values;
 
-    const handleClick = () => {
+    const alertEdit = () => {
         setAlert(true);
-      };
+    };
 
-      const handleCloseAlert = (event, reason) => {
+    const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') {
-          return;
+            return;
         }
         setAlert(false);
-      };
+    };
 
 
     const btnActualizarComercio = () => {
-
         if (!otros) values.otro = '';
-
         values.fecha = selectedDate;
         values.opciones = JSON.stringify(opciones);
-        console.log('Actulizando el comercio', values);
-        dispatch(actualizarComercio(values));
-        dispatch(obtenerComercio({ id }));
-        handleClick();
-
+        //console.log('Actulizando el comercio', values);
+        if(validarFomulario()){
+            dispatch(actualizarComercio(values));
+            dispatch(obtenerComercio({ id }));
+            alertEdit();
+        }else{
+            setAlertError(true);
+        }
+        
     }
 
     const handelImputChanche = (e) => {
@@ -89,16 +85,10 @@ export const EditarComercio = () => {
 
         const resp = await fetch(`http://localhost:8888/comercios/${idComercio}`);
         const body = await resp.json();
-
-        const { opciones  } = body;
-
+        const { opciones } = body;
         setvalues(body);
         handleDateChange(body.fecha)
-
-        setOpciones( JSON.parse(opciones) );
-
-        //console.log(body);
-         
+        setOpciones(JSON.parse(opciones));
     }
 
     const handelImputChancheCheck = (e) => {
@@ -110,10 +100,17 @@ export const EditarComercio = () => {
         );
     }
 
+    const validarFomulario = () => {
+        if (nombreComercio.trim().length === 0) return false;
+        if (propietario.trim().length === 0) return false;
+        if (direccion.trim().length === 0) return false;
+        return true;
+    }
     return (
 
         <div className="card animate__animated animate__fadeIn">
             <div className="card-body">
+                <h3 className="card-title text-center animate__animated animate__zoomIn">Editar Comercio</h3>
                 <div className="container m-5" >
                     <div className="form-row">
                         <div className="form-group col-md-6">
@@ -123,7 +120,7 @@ export const EditarComercio = () => {
                         </div>
                         <div className="form-group col-md-6">
                             <div className={classes.imput} noValidate autoComplete="off">
-                                <TextField value={propietario} name="propietario" onChange={handelImputChanche} label="Nombre del comercio" />
+                                <TextField value={propietario} name="propietario" onChange={handelImputChanche} label="Propietario" />
                             </div>
                         </div>
                     </div>
@@ -132,15 +129,15 @@ export const EditarComercio = () => {
 
                             <div className={classes.imput} noValidate autoComplete="off">
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <DatePicker name="fecha" value={selectedDate} onChange={handleDateChange}  />
+                                    <DatePicker name="fecha" value={selectedDate} onChange={handleDateChange} />
                                 </MuiPickersUtilsProvider>
                             </div>
 
                         </div>
                         <div className="form-group col-md-6">
-                            <div className="form-group">
+                            <div className="form-group ">
                                 <div className={classes.imput} noValidate autoComplete="off">
-                                    <TextField value={direccion} onChange={handelImputChanche} name="direccion" label="Nombre del comercio" />
+                                    <TextField value={direccion} onChange={handelImputChanche} name="direccion" label="Direccion del comercio" />
                                 </div>
                             </div>
                         </div>
@@ -250,16 +247,21 @@ export const EditarComercio = () => {
                         </div>}
 
                     <div className="form-row" >
-                        <Button onClick={btnActualizarComercio} variant="contained" color="secondary">
+                        <Button onClick={btnActualizarComercio} variant="contained" className="btn bg-primario text-white" >
                             Actualizar
                         </Button>
                     </div>
 
                 </div>
             </div>
-            <Snackbar open={alert} autoHideDuration={6000} onClose={handleCloseAlert}>
+            <Snackbar open={alert} autoHideDuration={2000} onClose={handleCloseAlert}>
                 <Alert onClose={handleCloseAlert} className="bg-warning text-white text-uppercase" severity="warning">
                     Comercio Actualizado con exito
+                </Alert>
+            </Snackbar>
+            <Snackbar open={alertError} autoHideDuration={2000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} className="bg-warning text-white text-uppercase" severity="warning">
+                    Formulario Invalido
                 </Alert>
             </Snackbar>
         </div>

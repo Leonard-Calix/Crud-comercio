@@ -7,11 +7,11 @@ export const modalStyle = (theme) => (
         paper: {
             padding: theme.spacing(2),
             textAlign: 'center',
-            color: theme.palette.text.secondary,
+            color: '#073b4c',
         },
         btn: {
             '& > *': {
-                margin: theme.spacing(1)
+                margin: theme.spacing(1),
             }
         },
         imput: {
@@ -25,7 +25,7 @@ export const modalStyle = (theme) => (
                 margin: theme.spacing(1),
                 width: '100%',
             },
-        }
+        },
     }
 
 

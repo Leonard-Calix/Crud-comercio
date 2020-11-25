@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         bottom: theme.spacing(2),
         right: theme.spacing(2),
+        background: '#073b4c',
     },
 }));
 
@@ -67,7 +68,7 @@ export const ListaComercios = () => {
 
             <div className="row" >
                 <div className="col-12 m-4 " >
-                    <h3 className="card-title text-center" >Lista de comercio</h3>
+                    <h2 className="card-title text-center animate__animated animate__zoomIn" >Lista de comercios</h2>
                 </div>
             </div>
             <div className="row" >
@@ -76,19 +77,19 @@ export const ListaComercios = () => {
                         <CardComercio handleClickRemove={handleClickRemove} key={comercio.id} {...comercio} />
                     ))
                 }
-                <Fab color="primary" onClick={handleOpen} className={classes.fab}>
-                    <AddIcon />
+                <Fab onClick={handleOpen} className={classes.fab}>
+                    <AddIcon className="text-white" />
                 </Fab>
             </div>
 
             <ModalNuevo handleOpen={handleOpen} handleClick={handleClick} handleClose={handleClose}  show={show} setShow={setShow} />
            
-            <Snackbar open={alert} autoHideDuration={6000} onClose={handleCloseAlert}>
+            <Snackbar open={alert} autoHideDuration={2000} onClose={handleCloseAlert}>
                 <Alert onClose={handleCloseAlert} className="bg-success text-white text-uppercase" severity="success">
                     Comercio agregado con exito
                 </Alert>
             </Snackbar>
-            <Snackbar open={alertRemove} autoHideDuration={6000} onClose={handleCloseAlert}>
+            <Snackbar open={alertRemove} autoHideDuration={2000} onClose={handleCloseAlert}>
                 <Alert onClose={handleCloseAlert} className="bg-danger text-white text-uppercase" severity="error">
                     Comercio eliminado con exito
                 </Alert>

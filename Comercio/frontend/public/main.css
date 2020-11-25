@@ -6,3 +6,39 @@
 .enlace:hover{
     text-decoration: none;
 }
+
+.bg-primario{
+    background-color: #073b4c !important;
+}
+
+.text-primario{
+    color: #073b4c !important;
+}
+.MuiButtonBase-root:hover{
+    background-color: #073b4c !important;
+}
+
+.btn-sm{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.btn-light-modal:hover{
+    background-color: rgb(88, 135, 175) !important;
+    border-color: #073b4c !important;
+    
+}
+
+.fuente{
+    font-family: 'Asap', sans-serif;
+    font-family: 'Sansita Swashed', cursive;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color:  #dc3545;
+}
+
+.targeta:hover{
+    background-color: #e0e0e0;
+}

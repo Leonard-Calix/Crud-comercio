@@ -16,11 +16,15 @@ import { modalStyle } from '../styles/modal';
 import { useForm } from '../hooks/useForm';
 import { useFormCheckbox } from '../hooks/useFormCheckbox';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import swal from 'sweetalert';
+import Snackbar from '@material-ui/core/Snackbar';
+import { Alert } from '@material-ui/lab';
+
 import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
+    DatePicker,
+    TimePicker,
+    DateTimePicker,
+    MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 
 
@@ -34,6 +38,7 @@ const useStyles = makeStyles(modalStyle);
 export const ModalNuevo = ({ handleOpen, handleClose, show, setShow, handleClick }) => {
     const dispatch = useDispatch();
     const classes = useStyles();
+    const [alertRemove, setAlertRemove] = React.useState(false);
 
     const [values, handelImputChanche, resetState] = useForm(state);
     const [selectedDate, handleDateChange] = useState(new Date());
@@ -42,16 +47,31 @@ export const ModalNuevo = ({ handleOpen, handleClose, show, setShow, handleClick
     const { cafeterias, restaurantes, heladeria, muebles, electrodomesticos, ferreterias, ventasConstruccion, materialesElectrico, bombas, otros } = valuesCheck;
     const { otro } = values;
 
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setAlertRemove(false);
+    };
+
     const handleSubmit = () => {
         nombreTipoComercio();
         values.fecha = selectedDate;
         values.opciones = JSON.stringify(valuesCheck);
-        console.log(values);
-        dispatch((agregarComercio(values)));
-        setShow(false);
-        resetState(state);
-        handleClick();
-        //resetState({});
+        //console.log(values);
+
+        if (validarFomulario()) {
+            dispatch((agregarComercio(values)));
+            setShow(false);
+            resetState(state);
+            handleClick();
+            //resetState({});
+        } else {
+            //console.log('Error');
+            setAlertRemove(true);
+
+
+        }
 
     };
 
@@ -61,17 +81,26 @@ export const ModalNuevo = ({ handleOpen, handleClose, show, setShow, handleClick
         if (tipoComercio == 2) values.nombreTipoComercio = 'Construccion';
     }
 
+    const validarFomulario = () => {
+
+        if (nombreComercio.trim().length === 0) return false;
+        if (propietario.trim().length === 0) return false;
+        if (direccion.trim().length === 0) return false;
+
+        return true;
+    }
+
     return (
-        <>
+        <div className="fuente">
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Nuevo comercio</Modal.Title>
+                    <Modal.Title className="animate__animated animate__zoomIn" >Nuevo comercio</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Grid container>
                         <Grid item xs={12} sm={6}>
                             <div className={classes.imput} noValidate autoComplete="off">
-                                <TextField name="nombreComercio" value={nombreComercio} onChange={handelImputChanche} label="Nombre del comercio" />
+                                <TextField className="fuente" name="nombreComercio" value={nombreComercio} onChange={handelImputChanche} label="Nombre del comercio" />
                             </div>
                         </Grid>
 
@@ -91,7 +120,7 @@ export const ModalNuevo = ({ handleOpen, handleClose, show, setShow, handleClick
                         <Grid item xs={12} sm={12}>
                             <div className={classes.imput} noValidate autoComplete="off">
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <DatePicker name="fecha" value={selectedDate} onChange={handleDateChange}  />
+                                    <DatePicker name="fecha" value={selectedDate} onChange={handleDateChange} />
                                 </MuiPickersUtilsProvider>
                             </div>
                         </Grid>
@@ -131,7 +160,7 @@ export const ModalNuevo = ({ handleOpen, handleClose, show, setShow, handleClick
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={12} >
-                            {otros && 
+                            {otros &&
                                 <div className="custom-control custom-checkbox m-2 p-2">
                                     <div className={classes.imput} noValidate autoComplete="off">
                                         <TextField name="otro" value={otro} onChange={handelImputChanche} label="Tipo del comercio" />
@@ -142,16 +171,22 @@ export const ModalNuevo = ({ handleOpen, handleClose, show, setShow, handleClick
                 </Modal.Body>
                 <Modal.Footer >
                     <div className={classes.btn}>
-                        <Button variant="contained" onClick={handleClose}>
+                        <Button variant="contained" className="btn bg-light text-dark" onClick={handleClose}>
                             Cerrar
                         </Button>
-                        <Button variant="contained" color="secondary" onClick={handleSubmit}>
+                        <Button variant="contained" className="btn bg-primario text-white" onClick={handleSubmit}>
                             Guardar
                         </Button>
                     </div>
                 </Modal.Footer>
             </Modal>
 
-        </>
+            <Snackbar open={alertRemove} autoHideDuration={2000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} className="bg-warning text-white text-uppercase" severity="warning">
+                    Formulario Invalido
+                </Alert>
+            </Snackbar>
+
+        </div>
     )
 }

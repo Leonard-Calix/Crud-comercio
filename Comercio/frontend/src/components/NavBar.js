@@ -27,13 +27,13 @@ export const NavBar = () => {
     const classes = useStyles();
     
     return (
-        <AppBar position="static">
+        <AppBar className="bg-primario fuente" position="static">
             <Toolbar>
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" className={classes.title}>
-                    <Link  color="primary" variant="body2" to="/" className="text-white enlace" > Gestion de comercios</Link>
+                    <Link  color="primary" variant="body2" to="/" className="text-white enlace fuente" > Gestion de comercios</Link>
                 </Typography>
             </Toolbar>
         </AppBar>

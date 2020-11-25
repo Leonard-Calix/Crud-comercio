@@ -51,18 +51,17 @@ export const CardComercio = ({ id, nombreComercio, propietario, nombreTipoComerc
 
     return (
         <div className="col-lg-4 col-md-4 col-sm-6 col-12 p-1 animate__animated animate__fadeIn" >
-            <div className="card">
+            <div className="card targeta">
                 <div className="card-body">
                     <h5 className="card-title">{nombreComercio}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">{propietario}</h6>
                     <p className="card-text">{nombreTipoComercio}</p>
                     <hr></hr>
                     <nav className="nav nav-pills nav-justified">
-                        <Link onClick={() => btnDetallesComercio(id)} to="/detalle-comercio" className="btn nav-item nav-link">Detalles</Link>
-                        <Link onClick={() => btnDetallesComercio(id)} to={`/editar-comercio/${id}`} className="btn nav-item nav-link">Editar</Link>
-                        <Link onClick={() => btnEliminarComercio(id)} to="/" className="btn nav-item nav-link">Eliminar</Link>
+                        <Link onClick={() => btnDetallesComercio(id)} to={`/detalle-comercio/${id}`} className="mb-2 text-dark btn btn-light btn-sm nav-item nav-link">Detalles</Link>
+                        <Link onClick={() => btnDetallesComercio(id)} to={`/editar-comercio/${id}`} className="mb-2 text-dark btn btn-light btn-sm nav-item nav-link">Editar</Link>
+                        <Link onClick={() => btnEliminarComercio(id)} to="/" className="mb-2 text-white btn btn-danger btn-sm nav-item nav-link">Eliminar</Link>
                     </nav>
-
                 </div>
             </div>
         </div>
