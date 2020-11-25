@@ -10,5 +10,10 @@ export const useForm = (initialState = {}) => {
             [target.name]: target.value
         });
     }
-    return [values, handelImputChanche]
+
+    const resetState = (state) => {
+        setvalues(state);
+    }
+
+    return [values, handelImputChanche, resetState]
 }

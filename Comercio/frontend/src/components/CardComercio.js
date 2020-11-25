@@ -1,18 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { Link } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
-//import swal from 'sweetalert';
-import PersonIcon from '@material-ui/icons/Person';
-import MenuIcon from '@material-ui/icons/Menu';
-
-import { Redirect, Link } from 'react-router-dom';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,71 +33,38 @@ const useStyles = makeStyles({
     },
 });
 
-export const CardComercio = ({ id, nombreComercio, propietario, direccion, tipoComercio }) => {
+export const CardComercio = ({ id, nombreComercio, propietario, nombreTipoComercio, direccion, tipoComercio, handleClickRemove }) => {
 
     const dispatch = useDispatch();
-    const classes = useStyles();
 
     const btnEliminarComercio = (id) => {
-        console.log('Eliminar', id);
+        //console.log('Eliminar', id);
         dispatch(EliminarComercio({ id }));
+        handleClickRemove();
     }
 
-    const btnDetallesComercio = (id) => {
-        console.log('Detalles', id);
-        dispatch(obtenerComercio({ id }));
-
-        <Redirect to="/nuevo-comercio" />
-
+    const btnDetallesComercio = (idComercio) => {
+        //console.log('Detalles', id);
+        dispatch(obtenerComercio({ id: idComercio }));
     }
 
 
     return (
-        <div>
+        <div className="col-lg-4 col-md-4 col-sm-6 col-12 p-1 animate__animated animate__fadeIn" >
+            <div className="card">
+                <div className="card-body">
+                    <h5 className="card-title">{nombreComercio}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted">{propietario}</h6>
+                    <p className="card-text">{nombreTipoComercio}</p>
+                    <hr></hr>
+                    <nav className="nav nav-pills nav-justified">
+                        <Link onClick={() => btnDetallesComercio(id)} to="/detalle-comercio" className="btn nav-item nav-link">Detalles</Link>
+                        <Link onClick={() => btnDetallesComercio(id)} to={`/editar-comercio/${id}`} className="btn nav-item nav-link">Editar</Link>
+                        <Link onClick={() => btnEliminarComercio(id)} to="/" className="btn nav-item nav-link">Eliminar</Link>
+                    </nav>
 
-            <Card className={classes.root} variant="outlined">
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {nombreComercio}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <PersonIcon /> {propietario}
-                    </Typography>
-                </CardContent>
-
-                <CardActions>
-                    <div className={classes.btns}>
-                        <ButtonGroup size="small" aria-label="small outlined button group">
-                            <Link
-                                color="secondary"
-                                to="/detalle-comercio"
-                                onClick={() => btnDetallesComercio(id)}
-                            >
-                                <MenuIcon />
-                            </Link>
-                            <Link
-                                color="secondary"
-                                variant="body2"
-                                to="/editar-comercio"
-                                onClick={() => btnDetallesComercio(id)}
-                            >
-                                <EditIcon />
-                            </Link>
-                            <Link
-                                onClick={() => btnEliminarComercio(id)}
-                                color="primary"
-                                variant="body2"
-                                to="/editar-comercio"
-                                onClick={() => btnDetallesComercio(id)}
-                            >
-                                <DeleteIcon />
-                            </Link>
-
-                        </ButtonGroup>
-                    </div>
-                </CardActions>
-            </Card>
-
-        </div >
+                </div>
+            </div>
+        </div>
     )
 }

@@ -36,7 +36,6 @@ export const EliminarComercio = (event) => {
             const body = await resp.json();
 
             //console.log(body);
-
             if (body == 1) {
                 dispatch(obtenerComercios());
             }
@@ -50,16 +49,24 @@ export const EliminarComercio = (event) => {
 export const actualizarComercio = (event) => {
     return async (dispatch) => {
         try {
+        
             const resp = await fetch(`http://localhost:8888/comercios/${event.id}`, {
-                method: "PUT", 
+                method: 'PUT', 
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(event)
             });
 
             const body = await resp.json();
 
-            console.log(body);
+            if(body){
+                console.log(body);
+                dispatch(obtenerComercios());
+                dispatch(activarComercio(event));
+            }
 
-            //dispatch(activarComercio(body));
+            
         } catch (error) {
             console.log(error);
         }
@@ -70,7 +77,7 @@ export const agregarComercio = (event) => {
     return async (dispatch) => {
         try {
             const resp = await fetch(`http://localhost:8888/comercios`, {
-                method: "POST", 
+                method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -79,9 +86,11 @@ export const agregarComercio = (event) => {
             
             const body = await resp.json();
 
-            console.log(body);
+            if(body.id){
+                dispatch(obtenerComercios());
+            }
 
-            //dispatch(activarComercio(body));
+            console.log(body);
         } catch (error) {
             console.log(error);
         }
@@ -105,4 +114,10 @@ export const activarComercio = (event) => ({
     type: types.activarComercio,
     payload: event
 });
+
+export const desactivarComercio = () => ({
+    type: types.desactivarComercio,
+    payload: {}
+});
+
 

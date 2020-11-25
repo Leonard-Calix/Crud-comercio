@@ -7,22 +7,16 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import { ModalNuevo } from './ModalNuevo';
+import Snackbar from '@material-ui/core/Snackbar';
+import Button from '@material-ui/core/Button';
+import { Alert } from '@material-ui/lab';
 
 // actions
 import { obtenerComercios, comercioActivo } from '../actions/comercio';
-
 // Reducer
 import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1
-    },
-    paper: {
-        padding: theme.spacing(4),
-        textAlign: "left",
-        color: theme.palette.text.primary
-    },
     fab: {
         position: 'absolute',
         bottom: theme.spacing(2),
@@ -30,33 +24,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-const handleInputChance = (event) => {
-    console.log(event.target.value);
-}
-
-const handleSubmit = () => {
-    console.log('Metodo para guardar el comercio');
-
-
-}
-
-const handleModal = () => {
-    console.log('Abriendo MODAL');
-}
-
-
 export const ListaComercios = () => {
 
     const classes = useStyles();
     const dispatch = useDispatch();
     const [show, setShow] = React.useState(false);
+    const [alert, setAlert] = React.useState(false);
+    const [alertRemove, setAlertRemove] = React.useState(false);
     const { comercios } = useSelector(state => state.comercio);
-    //console.log(comercios)
 
     useEffect(() => {
         dispatch(obtenerComercios());
-    }, [dispatch]);
+    }, []);
 
     const handleOpen = () => {
         setShow(true);
@@ -65,43 +44,55 @@ export const ListaComercios = () => {
 
     const handleClose = () => {
         setShow(false);
-
     };
 
+    const handleClick = () => {
+        setAlert(true);
+      };
+
+      const handleClickRemove = () => {
+        setAlertRemove(true);
+      };
+    
+      const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setAlert(false);
+        setAlertRemove(false);
+      };
+
     return (
-        <div>
-            <div className={classes.root}>
-                <Grid >
-                    <Grid item xs={12} sm={12} >
-                        <Paper className={classes.paper}>
-                            <Typography gutterBottom variant="h4" component="h2">
-                                Lista de comercios
-                            </Typography>
-                        </Paper>
-                    </Grid>
+        <div className="container-fluid" >
 
-                    <Grid item xs={12} sm={12} >
-
-                        <Paper className={classes.paper}>
-                            <Grid spacing={3} container >
-                                {
-                                    comercios.map(comercio => (
-                                        <Grid item xs={12} md={4} sm={12}>
-                                            <CardComercio key={comercio.id} {...comercio} />
-                                        </Grid>
-                                    ))
-                                }
-                                <Fab color="primary" onClick={handleOpen} className={classes.fab}>
-                                    <AddIcon />
-                                </Fab>
-                            </Grid>
-                        </Paper>
-
-                    </Grid>
-                </Grid>
-                <ModalNuevo handleOpen={handleOpen} handleClose={handleClose} show={show} />
+            <div className="row" >
+                <div className="col-12 m-4 " >
+                    <h3 className="card-title text-center" >Lista de comercio</h3>
+                </div>
+            </div>
+            <div className="row" >
+                {
+                    comercios.map(comercio => (
+                        <CardComercio handleClickRemove={handleClickRemove} key={comercio.id} {...comercio} />
+                    ))
+                }
+                <Fab color="primary" onClick={handleOpen} className={classes.fab}>
+                    <AddIcon />
+                </Fab>
             </div>
 
+            <ModalNuevo handleOpen={handleOpen} handleClick={handleClick} handleClose={handleClose}  show={show} setShow={setShow} />
+           
+            <Snackbar open={alert} autoHideDuration={6000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} className="bg-success text-white text-uppercase" severity="success">
+                    Comercio agregado con exito
+                </Alert>
+            </Snackbar>
+            <Snackbar open={alertRemove} autoHideDuration={6000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} className="bg-danger text-white text-uppercase" severity="error">
+                    Comercio eliminado con exito
+                </Alert>
+            </Snackbar>
         </div>
     )
 }

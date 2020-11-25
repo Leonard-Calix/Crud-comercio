@@ -6,8 +6,6 @@ var router = express.Router();
 //obtener comercios 
 router.post('/', function (req, res) {
 
-    console.log(req.body)
-
     ComercioComida.create({
         nombreComercio: req.body.nombreComercio,
         propietario: req.body.propietario,
@@ -62,13 +60,15 @@ router.get('/:id', function (req, res) {
 // Editar un comercio Comida
 router.put('/:id', function (req, res) {
 
+    console.log(req.body)
+
     ComercioComida.update({
         nombreComercio: req.body.nombreComercio,
         propietario: req.body.propietario,
         direccion: req.body.direccion,
         fecha: req.body.fecha,
         nombreTipoComercio: req.body.nombreTipoComercio,
-        tipoComercio: req.body.tipoComercio,
+        tipoComercio: Number(req.body.tipoComercio),
         opciones: req.body.opciones,
         otro: req.body.otro
     }, {

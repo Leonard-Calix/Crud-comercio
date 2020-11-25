@@ -9,5 +9,7 @@ export const types = {
     ActualizarComercio: 'actualizar',
     ListarComercios: 'ObtenerTodas',
     activarComercio: 'activo',
-    cargarComercios: 'cargar'
+    cargarComercios: 'cargar',
+    desactivarComercio: 'desactivar'
+
 } 

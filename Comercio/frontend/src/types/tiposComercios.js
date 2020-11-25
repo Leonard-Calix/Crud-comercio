@@ -1,7 +1,7 @@
 
 export const opcionesComercios = [
     {
-        caracteristicas: [
+        opciones: [
             {
                 label: 'Cafeterías',
                 value: 'cafeterias'
@@ -16,11 +16,11 @@ export const opcionesComercios = [
             },
             {
                 label: 'Otro',
-                value: 'otro'
+                value: 'otros'
             }]
     },
     {
-        caracteristicas: [
+        opciones: [
             {
                 label: 'Muebles',
                 value: 'muebles'
@@ -31,11 +31,11 @@ export const opcionesComercios = [
             },
             {
                 label: 'Otro',
-                value: 'otro'
+                value: 'otros'
             }]
     },
     {
-        caracteristicas: [
+        opciones: [
             {
                 label: 'Ferreterias',
                 value: 'ferreterias'
@@ -54,7 +54,7 @@ export const opcionesComercios = [
             },
             {
                 label: 'Otro',
-                value: 'otro'
+                value: 'otros'
             }
         ]
     }
